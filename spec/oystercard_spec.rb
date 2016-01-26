@@ -33,6 +33,16 @@ RSpec.describe Oystercard do
     expect{oystercard.top_up(5)}.to raise_error 'Maximum balance of #{maximum_balance} is exceeded'
    end
 
+   context 'fare can be deducted' do
+
+   it { is_expected.to respond_to(:deduct).with(1).argument }
+
+   it 'subtracts the value of the argument from the existing balance' do
+    expect{oystercard.deduct(10)}.to change{oystercard.balance}.by -10
+   end
+
+   end
+
  end
 
 
