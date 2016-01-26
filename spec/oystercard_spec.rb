@@ -9,6 +9,7 @@ RSpec.describe Oystercard do
     expect(subject).to be_a (Oystercard)
 		end
 
+
    context 'oystercard has a balance' do
    it { is_expected.to respond_to :balance }
 
@@ -17,16 +18,22 @@ RSpec.describe Oystercard do
 		end
    end
 
+
    context 'oystercard can be topped up ' do
+
    it { is_expected.to respond_to(:top_up).with(1).argument }
 
    it 'can be topped up with an amount' do
    	expect{subject.top_up(10)}.to change{ subject.balance }.by 10
    end
+
+   it 'raises an error if the maximum balance is exceeded' do
+    maximum_balance = Oystercard::MAXIMUM_BALANCE
+    oystercard.top_up(maximum_balance)
+    expect{oystercard.top_up(5)}.to raise_error 'Maximum balance of #{maximum_balance} is exceeded'
+   end
+
  end
-
-
-
 
 
 
