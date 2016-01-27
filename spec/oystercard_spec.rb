@@ -50,13 +50,13 @@ context 'can give the status' do
 
   it 'can touch in' do
     oystercard.top_up(3)
-    oystercard.touch_in
+    oystercard.touch_in("Charing Cross")
     expect(oystercard).to be_in_journey
   end
 
   it 'can touch out' do
     oystercard.top_up(4)
-    oystercard.touch_in
+    oystercard.touch_in("Charing Cross")
     oystercard.touch_out
     expect(oystercard).not_to be_in_journey
   end
@@ -65,7 +65,17 @@ end
 
 context '#touch_in' do
   it "raises an error if the balance is less then #{Oystercard::MINIMUM_BALANCE}" do
-    expect{oystercard.touch_in}.to raise_error 'Your balance is not enough'
+    expect{oystercard.touch_in("Charing Cross")}.to raise_error 'Your balance is not enough'
+  end
+
+  it 'responds to an argument' do
+    expect(oystercard).to respond_to(:touch_in).with(1).argument
+  end
+
+  it 'to remember the argument value received' do
+    oystercard.top_up(3)
+    oystercard.touch_in("Charing Cross")
+    expect(oystercard.entry_station).to eq("Charing Cross")
   end
 end
 
@@ -73,6 +83,13 @@ context '#touch_out' do
   it 'should deduct minimum fare from the balance' do
     oystercard.top_up(10)
     expect{oystercard.touch_out}.to change{oystercard.balance}.by -Oystercard::MINIMUM_FARE
+  end
+
+  it 'sets the entry station value as nil' do
+    oystercard.top_up(10)
+    oystercard.touch_in("Charing Station")
+    oystercard.touch_out
+    expect(oystercard.entry_station).to eq nil
   end
 end
   
