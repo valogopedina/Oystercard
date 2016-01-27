@@ -4,11 +4,6 @@ RSpec.describe Oystercard do
 
   subject(:oystercard) {described_class.new}
 
-  it 'creates an oystercard' do
-    expect(oystercard).to be_a (Oystercard)
-  end
-
-
   context 'oystercard has a balance' do
 
    it { is_expected.to respond_to :balance }
@@ -57,7 +52,7 @@ context 'can give the status' do
   it 'can touch out' do
     oystercard.top_up(4)
     oystercard.touch_in("Charing Cross")
-    oystercard.touch_out
+    oystercard.touch_out("Finsbury Park")
     expect(oystercard).not_to be_in_journey
   end
 
@@ -72,7 +67,7 @@ context '#touch_in' do
     expect(oystercard).to respond_to(:touch_in).with(1).argument
   end
 
-  it 'to remember the argument value received' do
+  it 'to remember the argument value as the @entry_station' do
     oystercard.top_up(3)
     oystercard.touch_in("Charing Cross")
     expect(oystercard.entry_station).to eq("Charing Cross")
@@ -82,17 +77,33 @@ end
 context '#touch_out' do
   it 'should deduct minimum fare from the balance' do
     oystercard.top_up(10)
-    expect{oystercard.touch_out}.to change{oystercard.balance}.by -Oystercard::MINIMUM_FARE
+    expect{oystercard.touch_out("Finsbury Park")}.to change{oystercard.balance}.by -Oystercard::MINIMUM_FARE
   end
 
   it 'sets the entry station value as nil' do
     oystercard.top_up(10)
     oystercard.touch_in("Charing Station")
-    oystercard.touch_out
+    oystercard.touch_out("Finsbury Park")
     expect(oystercard.entry_station).to eq nil
+  end
+
+  it 'to remember the argument value as the @exit_station' do
+    oystercard.top_up(10)
+    oystercard.touch_in("Charing Cross")
+    oystercard.touch_out("Finsbury Park")
+    expect(oystercard.exit_station).to eq ("Finsbury Park")
   end
 end
   
-
+context '#history' do
+  it 'returns an array that contains hashes of each entry and exit station pair' do
+    oystercard.top_up(10)
+    oystercard.touch_in("Charing Cross")
+    oystercard.touch_out("Finsbury Park")
+    oystercard.touch_in("Finsbury Park")
+    oystercard.touch_out("Charing Cross")
+    expect(oystercard.history).to eq [{"Charing Cross" => "Finsbury Park"}, {"Finsbury Park" => "Charing Cross"}]
+  end
+end
 
 end
