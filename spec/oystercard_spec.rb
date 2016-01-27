@@ -33,14 +33,14 @@ RSpec.describe Oystercard do
   end
 end
 
-context 'fare can be deducted' do
+# vvvvvv Commented out because method is private vvvvvv
+# context 'fare can be deducted' do  
+#   # it { is_expected.to respond_to(:deduct).with(1).argument }
 
-  it { is_expected.to respond_to(:deduct).with(1).argument }
-
-  it 'subtracts the value of the argument from the existing balance' do
-    expect{oystercard.deduct(10)}.to change{oystercard.balance}.by -10
-  end
-end
+#   # it 'subtracts the value of the argument from the existing balance' do
+#   #   expect{oystercard.deduct(10)}.to change{oystercard.balance}.by -10
+#   # end
+# end
 
 context 'can give the status' do
  
@@ -66,6 +66,13 @@ end
 context '#touch_in' do
   it "raises an error if the balance is less then #{Oystercard::MINIMUM_BALANCE}" do
     expect{oystercard.touch_in}.to raise_error 'Your balance is not enough'
+  end
+end
+
+context '#touch_out' do
+  it 'should deduct minimum fare from the balance' do
+    oystercard.top_up(10)
+    expect{oystercard.touch_out}.to change{oystercard.balance}.by -Oystercard::MINIMUM_FARE
   end
 end
   
