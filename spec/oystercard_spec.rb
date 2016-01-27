@@ -4,11 +4,6 @@ RSpec.describe Oystercard do
 
   subject(:oystercard) {described_class.new}
 
-  it 'creates an oystercard' do
-    expect(oystercard).to be_a (Oystercard)
-  end
-
-
   context 'oystercard has a balance' do
 
    it { is_expected.to respond_to :balance }
@@ -43,7 +38,7 @@ end
 # end
 
 context 'can give the status' do
- 
+
   it 'is initially not in a journey' do
     expect(oystercard).not_to be_in_journey
   end
@@ -92,7 +87,7 @@ context '#touch_out' do
     expect(oystercard.entry_station).to eq nil
   end
 end
-  
+
 
 
 end
