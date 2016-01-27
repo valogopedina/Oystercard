@@ -28,9 +28,8 @@ RSpec.describe Oystercard do
   end
 
   it 'raises an error if the maximum balance is exceeded' do
-    maximum_balance = Oystercard::MAXIMUM_BALANCE
-    oystercard.top_up(maximum_balance)
-    expect{oystercard.top_up(5)}.to raise_error 'Maximum balance of #{maximum_balance} is exceeded'
+    oystercard.top_up(Oystercard::MAXIMUM_BALANCE)
+    expect{oystercard.top_up(5)}.to raise_error "Maximum balance of #{Oystercard::MAXIMUM_BALANCE} is exceeded"
   end
 end
 
@@ -50,16 +49,26 @@ context 'can give the status' do
   end
 
   it 'can touch in' do
+    oystercard.top_up(3)
     oystercard.touch_in
     expect(oystercard).to be_in_journey
   end
 
   it 'can touch out' do
+    oystercard.top_up(4)
     oystercard.touch_in
     oystercard.touch_out
     expect(oystercard).not_to be_in_journey
   end
 
 end
+
+context '#touch_in' do
+  it "raises an error if the balance is less then #{Oystercard::MINIMUM_BALANCE}" do
+    expect{oystercard.touch_in}.to raise_error 'Your balance is not enough'
+  end
+end
+  
+
 
 end
