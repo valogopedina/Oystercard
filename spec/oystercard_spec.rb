@@ -77,6 +77,7 @@ end
 context '#touch_out' do
   it 'should deduct minimum fare from the balance' do
     oystercard.top_up(10)
+    oystercard.touch_in("Charing Cross")
     expect{oystercard.touch_out("Finsbury Park")}.to change{oystercard.balance}.by -Oystercard::MINIMUM_FARE
   end
 
