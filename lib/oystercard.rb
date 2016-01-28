@@ -2,9 +2,6 @@
 class Oystercard
 
 	attr_reader :balance, :entry_station, :exit_station, :history, :journey
-	#def balance
-	#  @balance
-	#end
 
 	MAXIMUM_BALANCE = 90
 	MINIMUM_BALANCE = 1
@@ -50,7 +47,7 @@ class Oystercard
   private
 
   def deduct num
-    @balance -= num #=> @balance = @balance - num
+    @balance -= num 
   end
 
 end
