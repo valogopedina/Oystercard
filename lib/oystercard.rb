@@ -20,9 +20,9 @@ class Oystercard
 
   def in_journey?
     entry_station != nil ? true : false # Ternary Operator
-	end
+  end
 
-	def touch_in(entry_station)
+  def touch_in(entry_station)
     fail 'Your balance is not enough' if balance < MINIMUM_BALANCE
     @entry_station = entry_station
     #start_journey
