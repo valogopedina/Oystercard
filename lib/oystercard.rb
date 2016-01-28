@@ -10,6 +10,7 @@ class Oystercard
   def initialize
     @balance = 0
     @history = []
+		journey = Journey.new
   end
 
   def top_up num
@@ -24,13 +25,15 @@ class Oystercard
 	def touch_in(entry_station)
 		fail 'Your balance is not enough' if balance < MINIMUM_BALANCE
 		@entry_station = entry_station
-    start_journey
+    #start_journey
+		journey.start_journey(entry_station)
   end
 
   def touch_out(exit_station)
     deduct(MINIMUM_FARE)
-    @exit_station = exit_station
-    end_journey
+    # @exit_station = exit_station
+    # end_journey
+		journey.end_journey(exit_station)
     @entry_station = nil
   end
 
@@ -47,7 +50,7 @@ class Oystercard
   private
 
   def deduct num
-    @balance -= num 
+    @balance -= num
   end
 
 end
