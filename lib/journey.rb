@@ -1,17 +1,20 @@
+require 'oystercard'
+
 class Journey
 
-  attr_reader :entry_station
-  attr_reader :exit_station
+  attr_reader  :history
+
+  def initialize
+    @history = []
+  end
 
   def start_journey(entry_station)
-    @entry_station = { entry_station => 0}
+    @entry_station = entry_station
   end
 
   def end_journey(exit_station)
-    @exit_station = { exit_station => 0}
-    result = [@entry_station, @exit_station]
-    @entry_station = nil
-    @exit_station = nil
-    result
+    @exit_station = exit_station
+    result = {@entry_station=>@exit_station}
+    history.push(result)
   end
 end

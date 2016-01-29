@@ -1,7 +1,8 @@
+require 'journey' 
 
 class Oystercard
 
-  attr_reader :balance, :entry_station, :exit_station, :history, :journey
+  attr_reader :balance, :entry_station, :exit_station, :this_journey 
 
   MAXIMUM_BALANCE = 90
   MINIMUM_BALANCE = 1
@@ -9,8 +10,6 @@ class Oystercard
 
   def initialize
     @balance = 0
-    @history = []
-    journey = Journey.new
   end
 
   def top_up num
@@ -19,32 +18,23 @@ class Oystercard
   end
 
   def in_journey?
-    entry_station != nil ? true : false # Ternary Operator
+   !!@entry_station #!= nil ? true : false 
   end
 
   def touch_in(entry_station)
     fail 'Your balance is not enough' if balance < MINIMUM_BALANCE
     @entry_station = entry_station
-    start_journey
-    # journey.start_journey(entry_station)
+    this_journey.start_journey(entry_station)
   end
 
   def touch_out(exit_station)
     deduct(MINIMUM_FARE)
-    @exit_station = exit_station
-    end_journey
-    # journey.end_journey(exit_station)
+    this_journey.end_journey(exit_station)
     @entry_station = nil
   end
 
-  def start_journey
-    @journey = {}
-    @journey[entry_station] = nil # started a journey (incomplete)
-  end
-
-  def end_journey
-    @journey[entry_station] = exit_station # ended our journey (complete)
-    history.push(@journey)
+  def this_journey
+    @this_journey ||= Journey.new
   end
 
   private

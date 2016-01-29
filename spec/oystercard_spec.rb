@@ -1,5 +1,6 @@
 require 'oystercard'
 
+
 RSpec.describe Oystercard do
 
   subject(:oystercard) {described_class.new}
@@ -90,23 +91,8 @@ context '#touch_out' do
     expect(oystercard.entry_station).to eq nil
   end
 
-  it 'to remember the argument value as the @exit_station' do
-    oystercard.top_up(10)
-    oystercard.touch_in(station1)
-    oystercard.touch_out(station2)
-    expect(oystercard.exit_station).to eq ("Finsbury Park")
-  end
 end
 
-context '#history' do
-  it 'returns an array that contains hashes of each entry and exit station pair' do
-    oystercard.top_up(10)
-    oystercard.touch_in(station1)
-    oystercard.touch_out(station2)
-    oystercard.touch_in(station2)
-    oystercard.touch_out(station1)
-    expect(oystercard.history).to eq [{"Charing Cross" => "Finsbury Park"}, {"Finsbury Park" => "Charing Cross"}]
-  end
-end
+
 
 end
